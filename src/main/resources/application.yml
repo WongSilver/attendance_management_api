@@ -1,0 +1,13 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/demo0317?useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  mapper-locations:
+    - classpath*:/mapper/**Maooer.xml
