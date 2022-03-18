@@ -10,7 +10,7 @@ import java.util.Collections;
  * 代码生成器
  * 参考模板地址：https://baomidou.com/pages/779a6e/
  */
-public class CodeGenerator {
+public class CodeGeneratorUtil {
     public static final String url = "jdbc:mysql://localhost:3306/attendance_management?useUnicode=true&characterEncoding=UTF-8";
     private static final String root = "root";
     private static final String password = "123456";
