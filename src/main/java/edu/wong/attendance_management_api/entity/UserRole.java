@@ -1,7 +1,5 @@
 package edu.wong.attendance_management_api.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
@@ -13,26 +11,25 @@ import java.io.Serializable;
  * @author WongSilver
  * @since 2022-03-20
  */
-@TableName("t_selected_course")
-public class SelectedCourse implements Serializable {
+@TableName("t_user_role")
+public class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
+     * 用户角色ID
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 选课学生ID
+     * 用户ID
      */
     private Integer userId;
 
     /**
-     * 课程ID
+     * 角色ID
      */
-    private Integer courseId;
+    private Integer roleId;
 
     public Integer getId() {
         return id;
@@ -48,20 +45,20 @@ public class SelectedCourse implements Serializable {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
-    public Integer getCourseId() {
-        return courseId;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     @Override
     public String toString() {
-        return "SelectedCourse{" +
+        return "UserRole{" +
             "id=" + id +
             ", userId=" + userId +
-            ", courseId=" + courseId +
+            ", roleId=" + roleId +
         "}";
     }
 }

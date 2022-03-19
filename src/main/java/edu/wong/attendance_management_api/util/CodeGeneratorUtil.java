@@ -12,7 +12,7 @@ import java.util.Collections;
  * 参考模板地址：https://baomidou.com/pages/779a6e/
  */
 public class CodeGeneratorUtil implements Serializable {
-    public static final String url = "jdbc:mysql://localhost:3306/attendance_management?useUnicode=true&characterEncoding=UTF-8";
+    public static final String url = "jdbc:mysql://localhost:3306/attend_mgt?useUnicode=true&characterEncoding=UTF-8";
     private static final String root = "root";
     private static final String password = "123456";
     private static final String outputDir = "E://IdeaProjects//attendance_management_api//src//main//java";
@@ -32,7 +32,9 @@ public class CodeGeneratorUtil implements Serializable {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, xmlOutputDir)); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("t_attendance", "t_course", "t_group", "t_leave", "t_management", "t_selected_course", "t_student", "t_teacher") // 设置需要生成的表名
+                    builder.addInclude("t_check", "t_course", "t_group", "t_leave",
+                                    "t_right", "t_role", "t_role_right", "t_selected_course",
+                                    "t_user", "t_user_role") // 设置需要生成的表名
                             .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                 })
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板

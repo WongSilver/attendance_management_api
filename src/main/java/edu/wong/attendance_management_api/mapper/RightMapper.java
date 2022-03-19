@@ -1,6 +1,6 @@
 package edu.wong.attendance_management_api.mapper;
 
-import edu.wong.attendance_management_api.entity.Management;
+import edu.wong.attendance_management_api.entity.Right;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author WongSilver
- * @since 2022-03-18
+ * @since 2022-03-20
  */
-public interface ManagementMapper extends BaseMapper<Management> {
+public interface RightMapper extends BaseMapper<Right> {
 
 }

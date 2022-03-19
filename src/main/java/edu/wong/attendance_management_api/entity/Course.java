@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author WongSilver
- * @since 2022-03-18
+ * @since 2022-03-20
  */
 @TableName("t_course")
 public class Course implements Serializable {
@@ -33,7 +33,7 @@ public class Course implements Serializable {
     /**
      * 任课教师
      */
-    private Integer teacherId;
+    private Integer userId;
 
     /**
      * 课程时间
@@ -69,12 +69,12 @@ public class Course implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public Integer getTeacherId() {
-        return teacherId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setTeacherId(Integer teacherId) {
-        this.teacherId = teacherId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
     public LocalDateTime getCourseDate() {
         return courseDate;
@@ -110,7 +110,7 @@ public class Course implements Serializable {
         return "Course{" +
             "id=" + id +
             ", name=" + name +
-            ", teacherId=" + teacherId +
+            ", userId=" + userId +
             ", courseDate=" + courseDate +
             ", selectedNum=" + selectedNum +
             ", maxNum=" + maxNum +

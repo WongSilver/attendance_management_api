@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author WongSilver
- * @since 2022-03-18
+ * @since 2022-03-20
  */
 @TableName("t_group")
 public class Group implements Serializable {
@@ -19,7 +20,7 @@ public class Group implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
+     * 班级ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -30,9 +31,19 @@ public class Group implements Serializable {
     private String name;
 
     /**
-     * 班级信息
+     * 最后一次操作者
      */
-    private String info;
+    private String lastOperator;
+
+    /**
+     * 最后一次操作时间
+     */
+    private LocalDateTime lastOperatorTime;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
     public Integer getId() {
         return id;
@@ -48,12 +59,26 @@ public class Group implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public String getInfo() {
-        return info;
+    public String getLastOperator() {
+        return lastOperator;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setLastOperator(String lastOperator) {
+        this.lastOperator = lastOperator;
+    }
+    public LocalDateTime getLastOperatorTime() {
+        return lastOperatorTime;
+    }
+
+    public void setLastOperatorTime(LocalDateTime lastOperatorTime) {
+        this.lastOperatorTime = lastOperatorTime;
+    }
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override
@@ -61,7 +86,9 @@ public class Group implements Serializable {
         return "Group{" +
             "id=" + id +
             ", name=" + name +
-            ", info=" + info +
+            ", lastOperator=" + lastOperator +
+            ", lastOperatorTime=" + lastOperatorTime +
+            ", remark=" + remark +
         "}";
     }
 }

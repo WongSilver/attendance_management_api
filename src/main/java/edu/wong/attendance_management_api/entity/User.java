@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author WongSilver
- * @since 2022-03-18
+ * @since 2022-03-20
  */
-@TableName("t_student")
-public class Student implements Serializable {
+@TableName("t_user")
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
+     * 用户ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -36,24 +36,34 @@ public class Student implements Serializable {
     private String password;
 
     /**
+     * 用户手机号
+     */
+    private String telephone;
+
+    /**
+     * 用户邮箱
+     */
+    private String mail;
+
+    /**
      * 所在班级ID
      */
     private Integer groupId;
 
     /**
-     * 用户性别
+     * 用户状态。1正常，0冻结，2删除
      */
-    private String sex;
+    private Integer status;
 
     /**
-     * 手机号
+     * 上次登录的时间
      */
-    private String phone;
+    private LocalDateTime lastTime;
 
     /**
-     * 用户创建日期
+     * 用户创建的时间
      */
-    private LocalDateTime createDate;
+    private LocalDateTime createTime;
 
     public Integer getId() {
         return id;
@@ -76,6 +86,20 @@ public class Student implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
     public Integer getGroupId() {
         return groupId;
     }
@@ -83,38 +107,40 @@ public class Student implements Serializable {
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
-    public String getSex() {
-        return sex;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    public LocalDateTime getCreateDate() {
-        return createDate;
+    public LocalDateTime getLastTime() {
+        return lastTime;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
+    public void setLastTime(LocalDateTime lastTime) {
+        this.lastTime = lastTime;
+    }
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "User{" +
             "id=" + id +
             ", name=" + name +
             ", password=" + password +
+            ", telephone=" + telephone +
+            ", mail=" + mail +
             ", groupId=" + groupId +
-            ", sex=" + sex +
-            ", phone=" + phone +
-            ", createDate=" + createDate +
+            ", status=" + status +
+            ", lastTime=" + lastTime +
+            ", createTime=" + createTime +
         "}";
     }
 }

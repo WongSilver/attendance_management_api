@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author WongSilver
- * @since 2022-03-18
+ * @since 2022-03-20
  */
 @TableName("t_leave")
 public class Leave implements Serializable {
@@ -28,7 +28,7 @@ public class Leave implements Serializable {
     /**
      * 请假的学生
      */
-    private Integer studentId;
+    private Integer userId;
 
     /**
      * 需要请假的时间
@@ -62,12 +62,12 @@ public class Leave implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-    public Integer getStudentId() {
-        return studentId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
     public LocalDateTime getLeaveDate() {
         return leaveDate;
@@ -109,7 +109,7 @@ public class Leave implements Serializable {
     public String toString() {
         return "Leave{" +
             "id=" + id +
-            ", studentId=" + studentId +
+            ", userId=" + userId +
             ", leaveDate=" + leaveDate +
             ", reason=" + reason +
             ", remark=" + remark +

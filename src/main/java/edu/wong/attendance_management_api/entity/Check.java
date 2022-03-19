@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author WongSilver
- * @since 2022-03-18
+ * @since 2022-03-20
  */
-@TableName("t_attendance")
-public class Attendance implements Serializable {
+@TableName("t_check")
+public class Check implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class Attendance implements Serializable {
     /**
      * 请假学生ID
      */
-    private Integer studentId;
+    private Integer userId;
 
     /**
      * 请假的课程ID
@@ -52,12 +52,12 @@ public class Attendance implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-    public Integer getStudentId() {
-        return studentId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
     public Integer getCourseId() {
         return courseId;
@@ -83,9 +83,9 @@ public class Attendance implements Serializable {
 
     @Override
     public String toString() {
-        return "Attendance{" +
+        return "Check{" +
             "id=" + id +
-            ", studentId=" + studentId +
+            ", userId=" + userId +
             ", courseId=" + courseId +
             ", date=" + date +
             ", tpye=" + tpye +

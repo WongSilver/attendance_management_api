@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
  * </p>
  *
  * @author WongSilver
- * @since 2022-03-18
+ * @since 2022-03-20
  */
 @Controller
-@RequestMapping("/teacher")
-public class TeacherController {
+@RequestMapping("/userRole")
+public class UserRoleController {
 
 }

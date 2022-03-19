@@ -1,6 +1,6 @@
 package edu.wong.attendance_management_api.mapper;
 
-import edu.wong.attendance_management_api.entity.Group;
+import edu.wong.attendance_management_api.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author WongSilver
  * @since 2022-03-20
  */
-public interface GroupMapper extends BaseMapper<Group> {
+public interface UserMapper extends BaseMapper<User> {
 
 }
