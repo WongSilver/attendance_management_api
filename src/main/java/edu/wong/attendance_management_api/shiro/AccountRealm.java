@@ -40,7 +40,9 @@ public class AccountRealm extends AuthorizingRealm {
         User user = service.getById(subject);
 //        如果用户为空抛出用户不存在异常
         if (user == null) {
-            throw new UnknownAccountException();
+            throw new UnknownAccountException("用户不存在");
+        }else if (user.getStatus() == 0){
+            throw new LockedAccountException("账户被锁定");
         }
 //        否则返回SimpleAuthenticationInfo
 //        包装SimpleAuthenticationInfo第一个参数，用户一些非重要的信息

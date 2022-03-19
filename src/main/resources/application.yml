@@ -10,8 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver #数据库驱动
 
 mybatis-plus:
-  mapper-locations:
-    - classpath*:/mapper/**Maooer.xml
+  mapper-locations: classpath*:/mapper/*.xml
 
 markerhub:
   jwt:

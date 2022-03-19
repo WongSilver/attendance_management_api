@@ -1,16 +1,16 @@
 package edu.wong.attendance_management_api.service;
 
-import edu.wong.attendance_management_api.entity.Attendance;
+import edu.wong.attendance_management_api.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author WongSilver
- * @since 2022-03-18
+ * @since 2022-03-20
  */
-public interface IAttendanceService extends IService<Attendance> {
+public interface IUserService extends IService<User> {
 
 }

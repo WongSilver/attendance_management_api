@@ -1,6 +1,6 @@
 package edu.wong.attendance_management_api.service;
 
-import edu.wong.attendance_management_api.entity.SelectedCourse;
+import edu.wong.attendance_management_api.entity.RoleRight;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author WongSilver
  * @since 2022-03-20
  */
-public interface ISelectedCourseService extends IService<SelectedCourse> {
+public interface IRoleRightService extends IService<RoleRight> {
 
 }
