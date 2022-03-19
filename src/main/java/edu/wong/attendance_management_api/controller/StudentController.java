@@ -1,8 +1,7 @@
 package edu.wong.attendance_management_api.controller;
 
-import edu.wong.attendance_management_api.entity.Student;
 import edu.wong.attendance_management_api.service.IStudentService;
-import edu.wong.attendance_management_api.util.ResponseFormatUtil;
+import edu.wong.attendance_management_api.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +25,8 @@ public class StudentController {
 
     @GetMapping("/index")
     @ResponseBody
-    public ResponseFormatUtil index() {
-        return ResponseFormatUtil.successful(service.getById(1));
+    public ResponseUtil index() {
+        return ResponseUtil.successful(service.getById(1));
     }
 
 }

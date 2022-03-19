@@ -4,10 +4,22 @@ server:
     context-path: /
 spring:
   datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/attendance_management?useUnicode=true&characterEncoding=UTF-8
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root  #数据库用户名
+    password: 123456  #是是数据库密码
+    url: jdbc:mysql://localhost:3306/attendance_management?useUnicode=true&characterEncoding=UTF-8  #数据库连接地址
+    driver-class-name: com.mysql.cj.jdbc.Driver #数据库驱动
+
 mybatis-plus:
   mapper-locations:
     - classpath*:/mapper/**Maooer.xml
+
+markerhub:
+  jwt:
+    secret: f4e2e52034348f86b67cde581c0f9eb5    #加密密钥
+    expire: 604800    #token有效时长
+    header: Authorization
+
+shiro-reids:
+  enable: true
+  redis-manager:
+    host: 127.0.0.1:6379

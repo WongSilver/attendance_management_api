@@ -4,13 +4,14 @@ import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
+import java.io.Serializable;
 import java.util.Collections;
 
 /**
  * 代码生成器
  * 参考模板地址：https://baomidou.com/pages/779a6e/
  */
-public class CodeGeneratorUtil {
+public class CodeGeneratorUtil implements Serializable {
     public static final String url = "jdbc:mysql://localhost:3306/attendance_management?useUnicode=true&characterEncoding=UTF-8";
     private static final String root = "root";
     private static final String password = "123456";
