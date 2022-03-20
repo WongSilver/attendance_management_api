@@ -3,12 +3,15 @@ package edu.wong.attendance_management_api.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author WongSilver
@@ -28,11 +31,13 @@ public class User implements Serializable {
     /**
      * 用户名
      */
+    @NotBlank(message = "用户名不能为空")
     private String name;
 
     /**
      * 用户密码
      */
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     /**
@@ -43,6 +48,7 @@ public class User implements Serializable {
     /**
      * 用户邮箱
      */
+    @Email(message = "邮箱格式不正确")
     private String mail;
 
     /**
@@ -72,6 +78,7 @@ public class User implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -79,6 +86,7 @@ public class User implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getPassword() {
         return password;
     }
@@ -86,6 +94,7 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getTelephone() {
         return telephone;
     }
@@ -93,6 +102,7 @@ public class User implements Serializable {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+
     public String getMail() {
         return mail;
     }
@@ -100,6 +110,7 @@ public class User implements Serializable {
     public void setMail(String mail) {
         this.mail = mail;
     }
+
     public Integer getGroupId() {
         return groupId;
     }
@@ -107,6 +118,7 @@ public class User implements Serializable {
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
+
     public Integer getStatus() {
         return status;
     }
@@ -114,6 +126,7 @@ public class User implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
     public LocalDateTime getLastTime() {
         return lastTime;
     }
@@ -121,6 +134,7 @@ public class User implements Serializable {
     public void setLastTime(LocalDateTime lastTime) {
         this.lastTime = lastTime;
     }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -132,15 +146,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-            "id=" + id +
-            ", name=" + name +
-            ", password=" + password +
-            ", telephone=" + telephone +
-            ", mail=" + mail +
-            ", groupId=" + groupId +
-            ", status=" + status +
-            ", lastTime=" + lastTime +
-            ", createTime=" + createTime +
-        "}";
+                "id=" + id +
+                ", name=" + name +
+                ", password=" + password +
+                ", telephone=" + telephone +
+                ", mail=" + mail +
+                ", groupId=" + groupId +
+                ", status=" + status +
+                ", lastTime=" + lastTime +
+                ", createTime=" + createTime +
+                "}";
     }
 }
