@@ -1,4 +1,4 @@
-package edu.wong.attendance_management_api.util;
+package edu.wong.attendance_management_api.lang;
 
 import lombok.Data;
 
@@ -9,24 +9,24 @@ import lombok.Data;
  * 其他自定义
  */
 @Data
-public class ResponseUtil {
+public class ResponseFormat {
     private int code;
     private String msg;
     private Object data;
 
     //    操作成功调用
-    public static ResponseUtil successful(Object data) {
+    public static ResponseFormat successful(Object data) {
         return operate(200, "操作成功", data);
     }
 
     //    操作失败调用
-    public static ResponseUtil fail(String msg) {
+    public static ResponseFormat fail(String msg) {
         return operate(400, msg, null);
     }
 
     //    其他操作调用
-    public static ResponseUtil operate(int code, String msg, Object data) {
-        ResponseUtil util = new ResponseUtil();
+    public static ResponseFormat operate(int code, String msg, Object data) {
+        ResponseFormat util = new ResponseFormat();
         util.setCode(code);
         util.setMsg(msg);
         util.setData(data);
