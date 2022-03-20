@@ -49,7 +49,7 @@ public class ShiroConfig {
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
         LinkedHashMap<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/**", "authc");
+//        filterMap.put("/**", "authc");
         chainDefinition.addPathDefinitions(filterMap);
         return chainDefinition;
     }
