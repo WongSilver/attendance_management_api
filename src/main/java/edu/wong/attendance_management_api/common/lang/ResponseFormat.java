@@ -1,4 +1,4 @@
-package edu.wong.attendance_management_api.lang;
+package edu.wong.attendance_management_api.common.lang;
 
 import lombok.Data;
 
