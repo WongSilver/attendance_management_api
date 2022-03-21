@@ -1,5 +1,6 @@
 package edu.wong.attendance_management_api.util;
 
+import edu.wong.attendance_management_api.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,16 +22,17 @@ public class JwtUtil {
     private String header;    //    数据头
 
     //    生成Token
-    public String generateToken(long userId) {
+    public String generateToken(User user) {
+        //    设置过期时间
         Date date = new Date();
         Date expireDate = new Date(date.getTime() + expire * 1000);
 
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
-                .setSubject(userId + "")
-                .setIssuedAt(date)
-                .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.ES512, secret)
+                .setHeaderParam("typ", "JWT")//jwt的header
+                .setSubject(user.getId().toString())//私有申明
+                .setIssuedAt(date)//签发时间
+                .setExpiration(expireDate)//过期时间
+                .signWith(SignatureAlgorithm.HS512, secret)//签名
                 .compact();
     }
 
