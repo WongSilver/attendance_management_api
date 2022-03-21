@@ -1,6 +1,6 @@
-package edu.wong.attendance_management_api.exception;
+package edu.wong.attendance_management_api.common.exception;
 
-import edu.wong.attendance_management_api.lang.ResponseFormat;
+import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.ShiroException;
 import org.springframework.http.HttpStatus;
@@ -29,6 +29,13 @@ public class GlobalException {
         BindingResult bindingResult = e.getBindingResult();
         ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
         return ResponseFormat.operate(401, objectError.getDefaultMessage(), null);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public ResponseFormat handler(IllegalArgumentException e) {
+        log.error("Assert时异常", e);
+        return ResponseFormat.fail(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
