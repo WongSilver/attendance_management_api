@@ -3,6 +3,7 @@ package edu.wong.attendance_management_api.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
  * @since 2022-03-20
  */
 @TableName("t_user")
+@Data
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
