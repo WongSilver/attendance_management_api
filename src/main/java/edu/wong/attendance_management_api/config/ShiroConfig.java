@@ -12,10 +12,10 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisSessionDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -25,7 +25,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-    @Autowired
+    @Resource
     JwtFilter jwtFilter;
 
     @Bean
@@ -39,34 +39,45 @@ public class ShiroConfig {
     public SessionsSecurityManager securityManager(AccountRealm accountRealm,
                                                    SessionManager sessionManager,
                                                    RedisCacheManager cacheManager) {
+
+//        设置自定义的Realm
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(accountRealm);
         securityManager.setSessionManager(sessionManager);
         securityManager.setCacheManager(cacheManager);
         return securityManager;
     }
 
+    /**
+     * 过滤规则
+     * anno，任何人都可以访问；
+     * authc：必须是登录之后才能进行访问，不包括remember me；
+     * user：登录用户才可以访问，包含remember me；
+     * perms：指定过滤规则，这个一般是扩展使用，不会使用原生的
+     */
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
         LinkedHashMap<String, String> filterMap = new LinkedHashMap<>();
-//        filterMap.put("/**", "authc");
+        filterMap.put("/**", "authc");
         chainDefinition.addPathDefinitions(filterMap);
         return chainDefinition;
     }
 
+    //    配置shiroFilter拦截器
     @Bean("shiroFilterFactoryBean")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager, ShiroFilterChainDefinition chainDefinition) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
-
+        // 必须设置 SecurityManager
         factoryBean.setSecurityManager(securityManager);
+        // 设置过滤器
         HashMap<String, Filter> filterHashMap = new HashMap<>();
         filterHashMap.put("jwt", jwtFilter);
         factoryBean.setFilters(filterHashMap);
+        // 设置过滤规则
         Map<String, String> filterChainMap = shiroFilterChainDefinition().getFilterChainMap();
         factoryBean.setFilterChainDefinitionMap(filterChainMap);
 
         return factoryBean;
     }
-
 
 }
