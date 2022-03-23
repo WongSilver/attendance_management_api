@@ -1,6 +1,7 @@
 package edu.wong.attendance_management_api.shiro;
 
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.util.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -11,7 +12,6 @@ import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
@@ -28,7 +28,7 @@ public class JwtFilter extends AuthenticatingFilter {
     JwtUtil util;
 
     @Override
-    protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+    protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String jwt = request.getHeader("Authorization");
         if (StringUtils.isEmpty(jwt)) {
@@ -37,22 +37,21 @@ public class JwtFilter extends AuthenticatingFilter {
         return new JwtToken(jwt);
     }
 
+    //    没有登录的状态下会执行
     @Override
-    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String token = request.getHeader("Authorization");
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        HttpServletRequest servletRequest = WebUtils.toHttp(request);
+        String token = servletRequest.getHeader("Authorization");
         //如果没有jwt就交给注解处理，有就进行校验和登陆处理
         if (StringUtils.isEmpty(token)) {
             return true;
-        } else {
-//          校验Jwt
-            Claims claimByToken = util.getClaimByToken(token);
-            if (claimByToken == null || util.isTokenExpired(claimByToken.getExpiration())) {
-                throw new ExpiredCredentialsException("token已失效，请重新登录");
-            }
-//          执行登录
-            return executeLogin(servletRequest, servletResponse);
         }
+        //          校验Jwt
+        Claims claimByToken = util.getClaimByToken(token);
+        if (claimByToken == null || util.isTokenExpired(claimByToken.getExpiration())) {
+            throw new ExpiredCredentialsException("token已失效，请重新登录");
+        }
+        return executeLogin(request, response);
     }
 
     //    重写onLoginFailure方法，因为返回值需要固定格式，可以使用ResponseFormat
@@ -60,10 +59,10 @@ public class JwtFilter extends AuthenticatingFilter {
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
 //        获取错误原因
         Throwable throwable = e.getCause() == null ? e : e.getCause();
-//        包装
+//        返回登录失败 包装成json
         ResponseFormat fail = ResponseFormat.fail(throwable.getMessage());
-
         String json = JSONUtil.toJsonStr(fail);
+
         try {
             HttpServletResponse servletResponse = (HttpServletResponse) response;
             servletResponse.getWriter().print(json);
