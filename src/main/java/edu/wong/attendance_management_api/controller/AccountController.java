@@ -8,11 +8,8 @@ import edu.wong.attendance_management_api.entity.User;
 import edu.wong.attendance_management_api.service.IUserService;
 import edu.wong.attendance_management_api.shiro.JwtToken;
 import edu.wong.attendance_management_api.util.JwtUtil;
-import jdk.nashorn.internal.parser.Token;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,10 +27,10 @@ public class AccountController {
 
     @Resource
     JwtUtil jwtUtil;
+    private String jwt;
 
     @PostMapping("/login")
     public ResponseFormat login(@Validated @RequestBody LoginDto dto, HttpServletResponse response) {
-
 //        查询数据库是否存在该用户
         User user = service.getOne(new QueryWrapper<User>().eq("name", dto.getName()));
         if (user == null) {
@@ -42,15 +39,15 @@ public class AccountController {
         if (!user.getPassword().equals(dto.getPassword())) {
             return ResponseFormat.fail("密码不正确");
         }
-        String jwt = jwtUtil.generateToken(user);
-//        SecurityUtils.getSubject().login(new JwtToken(jwt));
+//       用户名密码正确 token不存在 生成Token返回给前端
+        if (jwt == null) {
+            jwt = jwtUtil.generateToken(user);
+        }
         response.setHeader("Authorization", jwt);
         response.setHeader("Access-control-Expose-Headers", "Authorization");
-        try {
-            SecurityUtils.getSubject().hasRole(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        执行登录
+        SecurityUtils.getSubject().login(new JwtToken(jwt));
+
         return ResponseFormat.successful(MapUtil.builder()
                 .put("name", user.getName())
                 .put("id", user.getId())
@@ -65,6 +62,5 @@ public class AccountController {
         SecurityUtils.getSubject().logout();
         return ResponseFormat.successful(null);
     }
-
 
 }
