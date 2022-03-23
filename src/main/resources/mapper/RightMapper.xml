@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.wong.attendance_management_api.mapper.RightMapper">
+    <resultMap id="selectRight" type="edu.wong.attendance_management_api.entity.Right">
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="url" property="url"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+        <result column="createTime" property="createTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+    <select id="selectRightUrlByRoleID" parameterType="int" resultMap="selectRight">
+        select *
+        from t_right,
+             t_role_right
+        where t_role_right.right_id = t_right.id
+          and t_role_right.role_id = #{id}
+    </select>
 
 </mapper>
