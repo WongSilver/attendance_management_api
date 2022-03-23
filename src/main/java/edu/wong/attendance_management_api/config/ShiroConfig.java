@@ -43,7 +43,7 @@ public class ShiroConfig {
 //        设置自定义的Realm
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(accountRealm);
         securityManager.setSessionManager(sessionManager);
-        securityManager.setCacheManager(cacheManager);
+//        securityManager.setCacheManager(cacheManager);
         return securityManager;
     }
 
