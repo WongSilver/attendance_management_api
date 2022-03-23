@@ -10,7 +10,10 @@ import edu.wong.attendance_management_api.service.IUserService;
 import edu.wong.attendance_management_api.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,8 +66,15 @@ public class UserController {
         return ResponseFormat.successful(user);
     }
 
-    //    编辑用户
+    /**
+     * 编辑用户
+     */
+//    验证用户是否登录
     @RequiresAuthentication
+//    检查权限
+    @RequiresPermissions(logical = Logical.OR, value = {"user:edit", "admin:edit"})
+//    检查角色
+    @RequiresRoles("admin")
     @PostMapping("/edit")
     public ResponseFormat edit(@RequestBody User user, HttpServletRequest request) {
         boolean b;
@@ -81,7 +91,7 @@ public class UserController {
 //        前端传来的ID查询后存在 提示用户名存在的
         if (user.getId() == null) {
             return ResponseFormat.fail("未登录");
-        } else if (!(token.getSubject().equals(principal.getId().toString()))) {
+        } else if (!token.getSubject().equals(principal.getId().toString()) || !principal.getId().equals(user.getId())) {
             return ResponseFormat.fail("没有编辑权限");
         } else if (!users.isEmpty()) {
             return ResponseFormat.fail("用户已存在");
