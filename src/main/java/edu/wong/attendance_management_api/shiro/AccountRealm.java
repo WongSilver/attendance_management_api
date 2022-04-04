@@ -60,7 +60,6 @@ public class AccountRealm extends AuthorizingRealm {
             userMap.put("user_id", user.getId());
             List<UserRole> userRoles = userRoleMapper.selectByMap(userMap);
 
-//            System.out.println("==================>角色<==================");
 //            通过角色ID 查询 角色名
             HashMap<String, Object> roleMap = new HashMap<>();
             ArrayList<Integer> rightList = new ArrayList<>();
@@ -71,11 +70,9 @@ public class AccountRealm extends AuthorizingRealm {
                 roleMapper.selectByMap(roleMap).forEach(role -> {
                     info.addRole(role.getName());
                     rightList.add(role.getId());
-//                    System.out.println("==================>" + role.getName());
                 });
             });
 
-//            System.out.println("==================>权限<==================");
 //            遍历rightList，把该用户所有的角色ID取出来
 //            通过 角色ID 查询 可操作的Url
 //            添加权限到Shiro
@@ -83,7 +80,6 @@ public class AccountRealm extends AuthorizingRealm {
                 rights = rightMapper.selectRightUrlByRoleID(id);
                 rights.forEach(url -> {
                     info.addStringPermission(url.getUrl());
-//                    System.out.println("==================>" + url.getUrl());
                 });
             });
 
