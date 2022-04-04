@@ -1,4 +1,4 @@
-package edu.wong.attendance_management_api.common.dto;
+package edu.wong.attendance_management_api.entity.dto;
 
 import lombok.Data;
 
