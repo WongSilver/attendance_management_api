@@ -42,11 +42,15 @@ public class JwtFilter extends AuthenticatingFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest servletRequest = WebUtils.toHttp(request);
         String token = servletRequest.getHeader("Authorization");
+//        System.out.println("---------Authorization------" +servletRequest.getHeader("authorization"));
+//        System.out.println("---------token------" +token);
         //如果没有jwt就交给注解处理，有就进行校验和登陆处理
-        if (StringUtils.isEmpty(token)) {
+        if (token == null || "null".equals(token)) {
             return true;
         }
-        //          校验Jwt
+//        System.out.println("---------------" + util.getClaimByToken(token).getExpiration());
+//        System.out.println("---------------" + util.isTokenExpired(util.getClaimByToken(token).getExpiration()));
+        //校验Jwt
         Claims claimByToken = util.getClaimByToken(token);
         if (claimByToken == null || util.isTokenExpired(claimByToken.getExpiration())) {
             throw new ExpiredCredentialsException("token已失效，请重新登录");
@@ -88,7 +92,6 @@ public class JwtFilter extends AuthenticatingFilter {
             servletResponse.setStatus(HttpStatus.OK.value());
             return false;
         }
-
         return super.preHandle(request, response);
     }
 }
