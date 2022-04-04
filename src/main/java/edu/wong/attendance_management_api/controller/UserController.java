@@ -1,5 +1,6 @@
 package edu.wong.attendance_management_api.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,12 +10,12 @@ import edu.wong.attendance_management_api.mapper.UserMapper;
 import edu.wong.attendance_management_api.service.IUserService;
 import edu.wong.attendance_management_api.util.JwtUtil;
 import io.jsonwebtoken.Claims;
+import org.apache.logging.log4j.util.Strings;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,7 +31,6 @@ import java.util.List;
  * @author WongSilver
  * @since 2022-03-20
  */
-@Controller
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -45,12 +45,20 @@ public class UserController {
 
     //    查询用户列表
     @GetMapping("/list")
-    public ResponseFormat list(@RequestParam(defaultValue = "1") Integer currentPage) {
+    public ResponseFormat list(@RequestParam(defaultValue = "1") Integer currentPage,
+                               @RequestParam(defaultValue = "10") Integer pageSize,
+                               @RequestParam(defaultValue = "") String userName,
+                               @RequestParam(defaultValue = "") String userMail,
+                               @RequestParam(defaultValue = "") String userGroup) {
 
 //        myBatisPlus自带的分页方法
 //        参数一：起始页，参数二：多少条数据
-        Page<User> page = new Page<>(currentPage, 5);
-        IPage<User> pageData = mapper.selectPage(page, new QueryWrapper<>());
+        IPage<User> page = new Page<>(currentPage, pageSize);
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Strings.isNotEmpty(userName), User::getName, userName);
+        lambdaQueryWrapper.like(Strings.isNotEmpty(userMail), User::getMail, userMail);
+        lambdaQueryWrapper.like(Strings.isNotEmpty(userGroup), User::getGroupId, userGroup);
+        IPage<User> pageData = service.page(page, lambdaQueryWrapper);
 
         return ResponseFormat.successful(pageData);
     }
@@ -62,7 +70,6 @@ public class UserController {
         if (user == null) {
             return ResponseFormat.fail("用户不存在");
         }
-
         return ResponseFormat.successful(user);
     }
 
@@ -99,5 +106,48 @@ public class UserController {
             b = service.updateById(user);
         }
         return b ? ResponseFormat.successful(null) : ResponseFormat.fail("失败");
+    }
+
+
+    /**
+     * 添加或修改用户信息
+     *
+     * @param user
+     * @return ResponseFormat
+     */
+    @PostMapping("/add")
+    public ResponseFormat add(@RequestBody User user) {
+        /**
+         * 逻辑：
+         * 1、判断用户ID是否为空，空添加用户，不为空修改用户信息
+         *  1.1、添加用户：判断用户名是否存在，不存在就添加
+         *  1.2、修改用户：传入需要修改的用户名，判断传入的用户名ID是否和当前ID是否一致
+         *    1.2.1、一致：当前用户名只有当前用户在使用，可以修改
+         *    1.2.2、不一致：其他用户在使用，提示用户名已存在
+         */
+        if (user.getId() != null) {
+            User temp = mapper.selectOne(new QueryWrapper<User>().eq("name", user.getName()));
+            if (temp == null || user.getId().equals(temp.getId())) {
+                return ResponseFormat.successful(service.saveOrUpdate(user));
+            }
+            return ResponseFormat.fail("用户名已存在");
+        }
+        if (user.getName() == null || user.getPassword() == null) {
+            return ResponseFormat.fail("用户名或密码不能为空");
+        }
+        if (mapper.selectCount(new QueryWrapper<User>().eq("name", user.getName())) > 0) {
+            return ResponseFormat.fail("用户名已存在");
+        }
+        return ResponseFormat.successful(service.saveOrUpdate(user));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseFormat delete(@PathVariable Integer id) {
+        return ResponseFormat.successful(mapper.deleteById(id));
+    }
+
+    @PostMapping("/delete/batch/")
+    public ResponseFormat deleteBatch(@RequestBody List<Integer> ids) {
+        return ResponseFormat.successful(mapper.deleteBatchIds(ids));
     }
 }
