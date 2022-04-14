@@ -2,7 +2,7 @@ package edu.wong.attendance_management_api.controller;
 
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import edu.wong.attendance_management_api.entity.dto.LoginDto;
+import edu.wong.attendance_management_api.entity.dto.LoginDTO;
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.entity.User;
 import edu.wong.attendance_management_api.mapper.AccountMapper;
@@ -31,7 +31,7 @@ public class AccountController {
     AccountMapper mapper;
 
     @PostMapping("/login")
-    public ResponseFormat login(@Validated @RequestBody(required = false) LoginDto dto, HttpServletResponse response) {
+    public ResponseFormat login(@Validated @RequestBody(required = false) LoginDTO dto, HttpServletResponse response) {
 //        查询数据库是否存在该用户
         User user = service.getOne(new QueryWrapper<User>().eq("name", dto.getName()));
         if (user == null) {
@@ -41,9 +41,9 @@ public class AccountController {
             return ResponseFormat.fail("密码不正确");
         }
 //       用户名密码正确 token不存在或者失效 生成Token返回给前端
-        if (jwt == null || jwtUtil.isTokenExpired(jwtUtil.getClaimByToken(jwt).getExpiration())) {
-            jwt = jwtUtil.generateToken(user);
-        }
+//        if (jwt == null || jwtUtil.isTokenExpired(jwtUtil.getClaimByToken(jwt).getExpiration())) {
+        jwt = jwtUtil.generateToken(user);
+//        }
         response.setHeader("Authorization", jwt);
         response.setHeader("Access-control-Expose-Headers", "Authorization");
 //        执行登录
@@ -54,6 +54,7 @@ public class AccountController {
                 .put("id", user.getId())
                 .put("groupId", user.getGroupId())
                 .put("mail", user.getMail())
+                .put("telephone", user.getTelephone())
                 .put("token", jwt)
                 .map());
     }
@@ -67,7 +68,6 @@ public class AccountController {
 
     @GetMapping("/info/{id}")
     public ResponseFormat Info(@PathVariable int id) {
-        System.out.println("---------------------");
         return ResponseFormat.successful(mapper.selectInfoByUserId(id));
     }
 

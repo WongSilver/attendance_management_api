@@ -49,10 +49,11 @@ public class AccountRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        this.clearCachedAuthenticationInfo(principalCollection);
-        this.clearCachedAuthorizationInfo(principalCollection);
+//        this.clearCachedAuthenticationInfo(principalCollection);
+//        this.clearCachedAuthorizationInfo(principalCollection);
 //        获取token对应的用户
         User user = (User) principalCollection.getPrimaryPrincipal();
+//        System.out.println("===============" + user.getId());
 
         try {
 //            通过 用户ID 查询 角色ID
@@ -102,7 +103,7 @@ public class AccountRealm extends AuthorizingRealm {
         if (user == null) {
             throw new UnknownAccountException("用户不存在");
         } else if (user.getStatus() == 0) {
-            throw new LockedAccountException("账户被锁定");
+            throw new LockedAccountException("用户被锁定，请联系管理员");
         }
 //        否则返回SimpleAuthenticationInfo
 //        包装SimpleAuthenticationInfo第一个参数，用户一些非重要的信息

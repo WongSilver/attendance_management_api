@@ -1,7 +1,7 @@
 package edu.wong.attendance_management_api.service;
 
-import edu.wong.attendance_management_api.entity.Check;
 import com.baomidou.mybatisplus.extension.service.IService;
+import edu.wong.attendance_management_api.entity.Check;
 
 /**
  * <p>
@@ -12,5 +12,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-03-20
  */
 public interface ICheckService extends IService<Check> {
-
 }
