@@ -1,19 +1,31 @@
 package edu.wong.attendance_management_api.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author WongSilver
  * @since 2022-03-20
  */
+
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("t_right")
 public class Right implements Serializable {
 
@@ -60,74 +72,8 @@ public class Right implements Serializable {
      */
     private String remark;
 
-    public Integer getId() {
-        return id;
-    }
+    private int pid;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return "Right{" +
-            "id=" + id +
-            ", code=" + code +
-            ", name=" + name +
-            ", url=" + url +
-            ", type=" + type +
-            ", status=" + status +
-            ", createTime=" + createTime +
-            ", remark=" + remark +
-        "}";
-    }
+    @TableField(exist = false)
+    private List<Right> rightList;
 }

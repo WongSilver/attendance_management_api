@@ -3,17 +3,26 @@ package edu.wong.attendance_management_api.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author WongSilver
  * @since 2022-03-20
  */
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("t_group")
 public class Group implements Serializable {
 
@@ -45,50 +54,9 @@ public class Group implements Serializable {
      */
     private String remark;
 
-    public Integer getId() {
-        return id;
-    }
+    /**
+     * 班级人数
+     */
+    private int num;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getLastOperator() {
-        return lastOperator;
-    }
-
-    public void setLastOperator(String lastOperator) {
-        this.lastOperator = lastOperator;
-    }
-    public LocalDateTime getLastOperatorTime() {
-        return lastOperatorTime;
-    }
-
-    public void setLastOperatorTime(LocalDateTime lastOperatorTime) {
-        this.lastOperatorTime = lastOperatorTime;
-    }
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return "Group{" +
-            "id=" + id +
-            ", name=" + name +
-            ", lastOperator=" + lastOperator +
-            ", lastOperatorTime=" + lastOperatorTime +
-            ", remark=" + remark +
-        "}";
-    }
 }

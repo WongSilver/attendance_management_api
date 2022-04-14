@@ -3,16 +3,25 @@ package edu.wong.attendance_management_api.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author WongSilver
  * @since 2022-03-20
  */
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("t_role")
 public class Role implements Serializable {
 
@@ -39,42 +48,4 @@ public class Role implements Serializable {
      */
     private Integer status;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-            "id=" + id +
-            ", name=" + name +
-            ", type=" + type +
-            ", status=" + status +
-        "}";
-    }
 }

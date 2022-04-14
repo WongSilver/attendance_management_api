@@ -1,11 +1,15 @@
 package edu.wong.attendance_management_api.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("view_user_info")
 public class Account {
     private int userId;
