@@ -72,7 +72,7 @@ public class Right implements Serializable {
      */
     private String remark;
 
-    private int pid;
+    private Integer pid;
 
     @TableField(exist = false)
     private List<Right> rightList;

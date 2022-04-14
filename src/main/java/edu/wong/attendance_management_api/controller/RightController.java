@@ -40,7 +40,7 @@ public class RightController {
     @PostMapping("/add")
     public ResponseFormat add(@RequestBody Right right) {
         service.saveOrUpdate(right);
-        return ResponseFormat.successful(null);
+        return ResponseFormat.successful("添加成功");
     }
 
 

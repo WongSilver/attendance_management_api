@@ -2,9 +2,9 @@ package edu.wong.attendance_management_api.controller;
 
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import edu.wong.attendance_management_api.entity.dto.LoginDTO;
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.entity.User;
+import edu.wong.attendance_management_api.entity.dto.LoginDTO;
 import edu.wong.attendance_management_api.mapper.AccountMapper;
 import edu.wong.attendance_management_api.service.IUserService;
 import edu.wong.attendance_management_api.shiro.JwtToken;
@@ -25,7 +25,6 @@ public class AccountController {
 
     @Resource
     JwtUtil jwtUtil;
-    private String jwt;
 
     @Resource
     AccountMapper mapper;
@@ -42,10 +41,10 @@ public class AccountController {
         }
 //       用户名密码正确 token不存在或者失效 生成Token返回给前端
 //        if (jwt == null || jwtUtil.isTokenExpired(jwtUtil.getClaimByToken(jwt).getExpiration())) {
-        jwt = jwtUtil.generateToken(user);
+        String jwt = jwtUtil.generateToken(user);
 //        }
         response.setHeader("Authorization", jwt);
-        response.setHeader("Access-control-Expose-Headers", "Authorization");
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
 //        执行登录
         SecurityUtils.getSubject().login(new JwtToken(jwt));
 
