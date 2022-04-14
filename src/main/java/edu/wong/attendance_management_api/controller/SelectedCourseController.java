@@ -1,17 +1,17 @@
 package edu.wong.attendance_management_api.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author WongSilver
  * @since 2022-03-20
  */
-@Controller
+@RestController
 @RequestMapping("/selectedCourse")
 public class SelectedCourseController {
 
