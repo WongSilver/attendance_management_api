@@ -63,5 +63,5 @@ public class Course implements Serializable {
      * 课程信息
      */
     private String info;
-    
+
 }
