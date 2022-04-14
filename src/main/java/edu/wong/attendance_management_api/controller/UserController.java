@@ -1,5 +1,8 @@
 package edu.wong.attendance_management_api.controller;
 
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,14 +15,18 @@ import edu.wong.attendance_management_api.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 
@@ -44,20 +51,19 @@ public class UserController {
     UserMapper mapper;
 
     //    查询用户列表
+    @RequiresRoles("admin")
     @GetMapping("/list")
-    public ResponseFormat list(@RequestParam(defaultValue = "1") Integer currentPage,
-                               @RequestParam(defaultValue = "10") Integer pageSize,
-                               @RequestParam(defaultValue = "") String userName,
-                               @RequestParam(defaultValue = "") String userMail,
-                               @RequestParam(defaultValue = "") String userGroup) {
+    public ResponseFormat list(@RequestParam(defaultValue = "1") Integer currentPage, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String userName, @RequestParam(defaultValue = "") String userMail, @RequestParam(defaultValue = "") String userGroup) {
 
 //        myBatisPlus自带的分页方法
 //        参数一：起始页，参数二：多少条数据
         IPage<User> page = new Page<>(currentPage, pageSize);
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+
         lambdaQueryWrapper.like(Strings.isNotEmpty(userName), User::getName, userName);
         lambdaQueryWrapper.like(Strings.isNotEmpty(userMail), User::getMail, userMail);
         lambdaQueryWrapper.like(Strings.isNotEmpty(userGroup), User::getGroupId, userGroup);
+
         IPage<User> pageData = service.page(page, lambdaQueryWrapper);
 
         return ResponseFormat.successful(pageData);
@@ -79,9 +85,7 @@ public class UserController {
 //    验证用户是否登录
     @RequiresAuthentication
 //    检查权限
-    @RequiresPermissions(logical = Logical.OR, value = {"user:edit", "admin:edit"})
-//    检查角色
-    @RequiresRoles("admin")
+//    @RequiresPermissions(logical = Logical.OR, value = {"user:edit", "admin:edit"})
     @PostMapping("/edit")
     public ResponseFormat edit(@RequestBody User user, HttpServletRequest request) {
         boolean b;
@@ -142,12 +146,57 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @RequiresRoles("admin")
     public ResponseFormat delete(@PathVariable Integer id) {
         return ResponseFormat.successful(mapper.deleteById(id));
     }
 
     @PostMapping("/delete/batch/")
     public ResponseFormat deleteBatch(@RequestBody List<Integer> ids) {
+        if (ids.size() == 0) {
+            return ResponseFormat.fail("请选择需要删除的数据");
+        }
         return ResponseFormat.successful(mapper.deleteBatchIds(ids));
+    }
+
+    @GetMapping("/export")
+    @RequiresRoles("admin")
+    public void ExportExcel(HttpServletResponse response) throws IOException {
+//        查询所有用户数据
+        List<User> list = service.list();
+//        写到浏览器
+        ExcelWriter writer = ExcelUtil.getWriter(true);
+
+//        使用下面注解可以不用起别名
+//        @Alias("XXXX")
+//        writer.addHeaderAlias("id", "ID");
+//        writer.addHeaderAlias("name", "用户名");
+//        writer.addHeaderAlias("password", "密码");
+//        writer.addHeaderAlias("telephone", "手机号");
+//        writer.addHeaderAlias("mail", "邮箱");
+//        writer.addHeaderAlias("group_id", "班级ID");
+//        writer.addHeaderAlias("status", "状态");
+//        writer.addHeaderAlias("last_time", "上次登录时间");
+//        writer.addHeaderAlias("create_time", "用户创建时间");
+
+        writer.write(list, true);
+
+//        通用的格式
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("用户信息", "UTF-8") + ".xlsx");
+        ServletOutputStream out = response.getOutputStream();
+        writer.flush(out, true);
+        out.close();
+        writer.close();
+    }
+
+    @PostMapping("/import")
+    @RequiresRoles("admin")
+    public boolean importExcel(MultipartFile file) throws IOException {
+        InputStream stream = file.getInputStream();
+        ExcelReader reader = ExcelUtil.getReader(stream);
+        List<User> maps = reader.readAll(User.class);
+        service.saveBatch(maps);
+        return true;
     }
 }
