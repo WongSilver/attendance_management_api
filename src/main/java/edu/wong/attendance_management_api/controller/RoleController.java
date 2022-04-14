@@ -6,11 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.entity.Role;
-import edu.wong.attendance_management_api.entity.UserRole;
 import edu.wong.attendance_management_api.mapper.RoleMapper;
-import edu.wong.attendance_management_api.mapper.UserRoleMapper;
 import edu.wong.attendance_management_api.service.IRoleService;
-import edu.wong.attendance_management_api.service.IUserRoleService;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +31,6 @@ public class RoleController {
     private IRoleService service;
     @Resource
     private RoleMapper mapper;
-    @Resource
-    private IUserRoleService userRoleService;
-    @Resource
-    private UserRoleMapper userRoleMapper;
 
     @GetMapping("/all")
     public ResponseFormat findAll() {
@@ -84,14 +77,12 @@ public class RoleController {
     /**
      * 添加或修改用户信息
      *
-     * @param
      * @return ResponseFormat
      */
     @PostMapping("/add")
     public ResponseFormat add(@RequestBody Role role) {
-        /**
-         * 逻辑：同用户
-         */
+
+//        逻辑：同用户
         if (role.getId() != null) {
             Role temp = mapper.selectOne(new QueryWrapper<Role>().eq("name", role.getName()));
             if (temp == null || role.getId().equals(temp.getId())) {
@@ -105,24 +96,5 @@ public class RoleController {
         return ResponseFormat.successful(service.saveOrUpdate(role));
     }
 
-    @PostMapping("/setRole")
-    public ResponseFormat setRole(@RequestBody UserRole userRole) {
-        if (userRole.getUserId() == 1) {
-            return ResponseFormat.fail("不能修改管理员角色");
-        }
-        QueryWrapper<UserRole> userRoleQueryWrapper = new QueryWrapper<>();
-        userRoleQueryWrapper.eq("user_id", userRole.getUserId());
-        Long existUser = userRoleMapper.selectCount(userRoleQueryWrapper);
-        if (existUser == 0) {
-//            添加
-            userRoleMapper.insert(userRole);
-            return ResponseFormat.operate(200, "添加成功", null);
-        } else if (existUser == 1) {
-//            更新
-            userRoleMapper.update(userRole, userRoleQueryWrapper);
-            return ResponseFormat.operate(200, "修改成功", null);
-        }
-        return ResponseFormat.fail("操作失败");
-    }
 
 }
