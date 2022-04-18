@@ -67,6 +67,7 @@ public class ShiroConfig {
     @Bean("shiroFilterFactoryBean")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager, ShiroFilterChainDefinition chainDefinition) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
+        factoryBean.setLoginUrl("/login");
         // 必须设置 SecurityManager
         factoryBean.setSecurityManager(securityManager);
         // 设置过滤器
