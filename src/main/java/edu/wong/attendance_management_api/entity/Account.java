@@ -24,4 +24,8 @@ public class Account {
     private String roleName;
     private int rightId;
     private String rightUrl;
+    private String rightName;
+    private int rightPid;
+    private String rightIcon;
+    private String rightPagePath;
 }
