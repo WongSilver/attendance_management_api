@@ -53,7 +53,6 @@ public class RightController {
      */
     @PostMapping("/add")
     public ResponseFormat add(@RequestBody Right right) {
-
         if (right.getId() != null) {
             Right temp = mapper.selectOne(new QueryWrapper<Right>().eq("name", right.getName()));
             if (temp == null || right.getId().equals(temp.getId())) {
