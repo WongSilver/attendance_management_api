@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.entity.User;
+import edu.wong.attendance_management_api.entity.dto.UserDTO;
 import edu.wong.attendance_management_api.mapper.UserMapper;
 import edu.wong.attendance_management_api.service.IUserService;
 import edu.wong.attendance_management_api.util.JwtUtil;
@@ -17,11 +18,13 @@ import org.apache.logging.log4j.util.Strings;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -115,20 +118,16 @@ public class UserController {
 
     /**
      * 添加或修改用户信息
-     *
-     * @param user
-     * @return ResponseFormat
+     * 逻辑：
+     * 1、判断用户ID是否为空，空添加用户，不为空修改用户信息
+     * 1.1、添加用户：判断用户名是否存在，不存在就添加
+     * 1.2、修改用户：传入需要修改的用户名，判断传入的用户名ID是否和当前ID是否一致
+     * 1.2.1、一致：当前用户名只有当前用户在使用，可以修改
+     * 1.2.2、不一致：其他用户在使用，提示用户名已存在
      */
     @PostMapping("/add")
     public ResponseFormat add(@RequestBody User user) {
-        /**
-         * 逻辑：
-         * 1、判断用户ID是否为空，空添加用户，不为空修改用户信息
-         *  1.1、添加用户：判断用户名是否存在，不存在就添加
-         *  1.2、修改用户：传入需要修改的用户名，判断传入的用户名ID是否和当前ID是否一致
-         *    1.2.1、一致：当前用户名只有当前用户在使用，可以修改
-         *    1.2.2、不一致：其他用户在使用，提示用户名已存在
-         */
+
         if (user.getId() != null) {
             User temp = mapper.selectOne(new QueryWrapper<User>().eq("name", user.getName()));
             if (temp == null || user.getId().equals(temp.getId())) {
@@ -160,25 +159,12 @@ public class UserController {
     }
 
     @GetMapping("/export")
-    @RequiresRoles("admin")
     public void ExportExcel(HttpServletResponse response) throws IOException {
-//        查询所有用户数据
-        List<User> list = service.list();
+        List<User> list = service.list();        //查询所有用户数据
 //        写到浏览器
-        ExcelWriter writer = ExcelUtil.getWriter(true);
-
 //        使用下面注解可以不用起别名
 //        @Alias("XXXX")
-//        writer.addHeaderAlias("id", "ID");
-//        writer.addHeaderAlias("name", "用户名");
-//        writer.addHeaderAlias("password", "密码");
-//        writer.addHeaderAlias("telephone", "手机号");
-//        writer.addHeaderAlias("mail", "邮箱");
-//        writer.addHeaderAlias("group_id", "班级ID");
-//        writer.addHeaderAlias("status", "状态");
-//        writer.addHeaderAlias("last_time", "上次登录时间");
-//        writer.addHeaderAlias("create_time", "用户创建时间");
-
+        ExcelWriter writer = ExcelUtil.getWriter(true);
         writer.write(list, true);
 
 //        通用的格式
@@ -191,7 +177,6 @@ public class UserController {
     }
 
     @PostMapping("/import")
-    @RequiresRoles("admin")
     public boolean importExcel(MultipartFile file) throws IOException {
         InputStream stream = file.getInputStream();
         ExcelReader reader = ExcelUtil.getReader(stream);
@@ -199,4 +184,17 @@ public class UserController {
         service.saveBatch(maps);
         return true;
     }
+
+    @GetMapping("/info")
+    public ResponseFormat getUserInfo(ServletRequest request) {
+        HttpServletRequest servletRequest = WebUtils.toHttp(request);
+//        查询Token储存的用户
+        Claims token = util.getClaimByToken(servletRequest.getHeader("Authorization"));
+        if (token != null) {
+            UserDTO userInfo = service.getUserInfo(Integer.valueOf(token.getSubject()));
+            return ResponseFormat.successful(userInfo);
+        }
+        return ResponseFormat.operate(400, "未查询到用户", null);
+    }
+
 }
