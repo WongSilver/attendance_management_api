@@ -1,10 +1,10 @@
 package edu.wong.attendance_management_api.controller;
 
-import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.entity.User;
 import edu.wong.attendance_management_api.entity.dto.LoginDTO;
+import edu.wong.attendance_management_api.entity.dto.UserDTO;
 import edu.wong.attendance_management_api.mapper.AccountMapper;
 import edu.wong.attendance_management_api.service.IUserService;
 import edu.wong.attendance_management_api.shiro.JwtToken;
@@ -21,13 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 public class AccountController {
 
     @Resource
-    IUserService service;
+    private IUserService service;
 
     @Resource
-    JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @Resource
-    AccountMapper mapper;
+    private AccountMapper mapper;
 
     @PostMapping("/login")
     public ResponseFormat login(@Validated @RequestBody(required = false) LoginDTO dto, HttpServletResponse response) {
@@ -48,14 +48,8 @@ public class AccountController {
 //        执行登录
         SecurityUtils.getSubject().login(new JwtToken(jwt));
 
-        return ResponseFormat.successful(MapUtil.builder()
-                .put("name", user.getName())
-                .put("id", user.getId())
-                .put("groupId", user.getGroupId())
-                .put("mail", user.getMail())
-                .put("telephone", user.getTelephone())
-                .put("token", jwt)
-                .map());
+        UserDTO userInfo = service.getUserInfo(user.getId());
+        return ResponseFormat.successful(userInfo);
     }
 
     @RequiresAuthentication
@@ -69,5 +63,4 @@ public class AccountController {
     public ResponseFormat Info(@PathVariable int id) {
         return ResponseFormat.successful(mapper.selectInfoByUserId(id));
     }
-
 }
