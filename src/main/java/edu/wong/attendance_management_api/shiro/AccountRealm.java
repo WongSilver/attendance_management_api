@@ -3,7 +3,7 @@ package edu.wong.attendance_management_api.shiro;
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.entity.Right;
 import edu.wong.attendance_management_api.entity.User;
-import edu.wong.attendance_management_api.entity.UserRole;
+import edu.wong.attendance_management_api.entity.dto.UserDTO;
 import edu.wong.attendance_management_api.mapper.RightMapper;
 import edu.wong.attendance_management_api.mapper.RoleMapper;
 import edu.wong.attendance_management_api.mapper.UserRoleMapper;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -56,6 +55,12 @@ public class AccountRealm extends AuthorizingRealm {
 //        System.out.println("===============" + user.getId());
 
         try {
+            UserDTO userInfo = userService.getUserInfo(user.getId());
+            info.addRole(userInfo.getRoleName());
+            List<String> url = new ArrayList<>();
+            userInfo.getRights().forEach(right -> url.add(right.getUrl()));
+            info.addStringPermissions(url);
+/*
 //            通过 用户ID 查询 角色ID
             HashMap<String, Object> userMap = new HashMap<>();
             userMap.put("user_id", user.getId());
@@ -79,10 +84,11 @@ public class AccountRealm extends AuthorizingRealm {
 //            添加权限到Shiro
             rightList.forEach(id -> {
                 rights = rightMapper.selectRightUrlByRoleID(id);
-                rights.forEach(url -> {
-                    info.addStringPermission(url.getUrl());
+                rights.forEach(name -> {
+//                    System.out.println(name.getName());
+                    info.addStringPermission(name.getName());
                 });
-            });
+            });*/
 
         } catch (Exception e) {
             ResponseFormat.fail("权限查询失败");
