@@ -38,11 +38,6 @@ public class Right implements Serializable {
     private Integer id;
 
     /**
-     * 权限码
-     */
-    private String code;
-
-    /**
      * 权限名
      */
     private String name;
@@ -51,6 +46,11 @@ public class Right implements Serializable {
      * 可以请求的url，可以正则
      */
     private String url;
+
+    /**
+     * 图标
+     */
+    private String icon;
 
     /**
      * 权限类型。1菜单，2按钮，3其他
@@ -73,6 +73,8 @@ public class Right implements Serializable {
     private String remark;
 
     private Integer pid;
+
+    private String pagePath;
 
     @TableField(exist = false)
     private List<Right> rightList;
