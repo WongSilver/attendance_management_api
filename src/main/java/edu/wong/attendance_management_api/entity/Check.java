@@ -40,15 +40,19 @@ public class Check implements Serializable {
     private Integer userId;
 
     /**
-     * 请假的课程ID
+     * 请假的班级ID
      */
-    private Integer courseId;
+    private Integer groupId;
 
     /**
-     * 请假的时间
+     * 开始请假时间
      */
-    private LocalDateTime date;
+    private LocalDateTime startDate;
 
+    /**
+     * 结束请假时间
+     */
+    private LocalDateTime endDate;
     /**
      * 类型
      */
@@ -57,5 +61,15 @@ public class Check implements Serializable {
     /**
      * 请假状态：0请假 1迟到 3旷课
      */
-    private int status;
+    private Integer status;
+
+    /**
+     * 是否批假0待审核，1批准，-1拒绝
+     */
+    private Integer yorn;
+
+    /**
+     * 描述
+     */
+    private String description;
 }
