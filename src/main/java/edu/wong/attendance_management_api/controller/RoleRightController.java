@@ -20,6 +20,7 @@ import java.util.List;
  * @author WongSilver
  * @since 2022-03-20
  */
+
 @RestController
 @RequestMapping("/roleRight")
 public class RoleRightController {
@@ -29,25 +30,29 @@ public class RoleRightController {
     @GetMapping("/checkedRight/{id}")
     public ResponseFormat checkedRight(@PathVariable Integer id) {
         List<Integer> list = new ArrayList<>();
-        QueryWrapper<RoleRight> roleRightQueryWrapper = new QueryWrapper<>();
-        roleRightQueryWrapper.eq("role_id", id);
-        List<RoleRight> roleRights = mapper.selectList(roleRightQueryWrapper);
+        QueryWrapper<RoleRight> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_id", id);
+        List<RoleRight> roleRights = mapper.selectList(wrapper);
         roleRights.forEach(i -> list.add(i.getRightId()));
         return ResponseFormat.successful(list);
     }
 
-    @Transactional
     @PostMapping("/setRoleRight")
     public ResponseFormat setRoleRight(@RequestBody RoleRightDTO dto) {
         if (dto.getRoleId() == 1) {
             return ResponseFormat.operate(200, "不能编辑管理员权限", null);
         }
+        AsyncRight(dto);
 
+        return ResponseFormat.operate(200, "权限设置成功", null);
+    }
+
+    //    开启事务，失败时回滚
+    @Transactional
+    void AsyncRight(RoleRightDTO dto) {
         QueryWrapper<RoleRight> wrapper = new QueryWrapper<>();
         wrapper.eq("role_id", dto.getRoleId());
-//        进来先删除当前用户的所有权限
-        mapper.delete(wrapper);
-
+        mapper.delete(wrapper);        //先删除当前用户的所有权限
         List<Integer> rightIds = dto.getRightIds();
         rightIds.forEach(i -> {
             RoleRight roleRight = new RoleRight();
@@ -55,6 +60,5 @@ public class RoleRightController {
             roleRight.setRightId(i);
             mapper.insert(roleRight);
         });
-        return ResponseFormat.operate(200, "权限设置成功", null);
     }
 }
