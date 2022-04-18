@@ -81,7 +81,6 @@ public class RoleController {
      */
     @PostMapping("/add")
     public ResponseFormat add(@RequestBody Role role) {
-
 //        逻辑：同用户
         if (role.getId() != null) {
             Role temp = mapper.selectOne(new QueryWrapper<Role>().eq("name", role.getName()));
@@ -94,6 +93,21 @@ public class RoleController {
             return ResponseFormat.fail("用户名已存在");
         }
         return ResponseFormat.successful(service.saveOrUpdate(role));
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    @RequiresRoles("admin")
+    public ResponseFormat delete(@PathVariable Integer id) {
+        return ResponseFormat.successful(mapper.deleteById(id));
+    }
+
+    @PostMapping("/delete/batch/")
+    public ResponseFormat deleteBatch(@RequestBody List<Integer> ids) {
+        if (ids.size() == 0) {
+            return ResponseFormat.fail("请选择需要删除的数据");
+        }
+        return ResponseFormat.successful(mapper.deleteBatchIds(ids));
     }
 
 
