@@ -17,6 +17,6 @@ import java.util.List;
  */
 public interface CheckMapper extends BaseMapper<Check> {
 
-    @Select("SELECT  date_format( date, '%Y-%m-%d' ) by_date, count(*) count_num  FROM t_check GROUP BY date_format( date, '%Y-%m-%d' );")
+    @Select("SELECT  date_format( start_date, '%Y-%m-%d' ) by_date, count(*) count_num  FROM t_check GROUP BY date_format( start_date, '%Y-%m-%d' );")
     List<CheckDateDTO> selectLeaveNumByDate();
 }
