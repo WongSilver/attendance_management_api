@@ -56,10 +56,12 @@ public class UserController {
     //    查询用户列表
     @RequiresRoles("admin")
     @GetMapping("/list")
-    public ResponseFormat list(@RequestParam(defaultValue = "1") Integer currentPage, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String userName, @RequestParam(defaultValue = "") String userMail, @RequestParam(defaultValue = "") String userGroup) {
-
-//        myBatisPlus自带的分页方法
-//        参数一：起始页，参数二：多少条数据
+    public ResponseFormat list(@RequestParam(defaultValue = "1") Integer currentPage,
+                               @RequestParam(defaultValue = "10") Integer pageSize,
+                               @RequestParam(defaultValue = "") String userName,
+                               @RequestParam(defaultValue = "") String userMail,
+                               @RequestParam(defaultValue = "") String userGroup) {
+//        myBatisPlus自带的分页方法 参数一：起始页，参数二：多少条数据
         IPage<User> page = new Page<>(currentPage, pageSize);
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 
@@ -185,6 +187,7 @@ public class UserController {
         return true;
     }
 
+    //    获取用户信息
     @GetMapping("/info")
     public ResponseFormat getUserInfo(ServletRequest request) {
         HttpServletRequest servletRequest = WebUtils.toHttp(request);
@@ -195,6 +198,12 @@ public class UserController {
             return ResponseFormat.successful(userInfo);
         }
         return ResponseFormat.operate(400, "未查询到用户", null);
+    }
+
+    @GetMapping("/total")
+    public ResponseFormat getTotal() {
+        List<User> list = service.list();
+        return ResponseFormat.successful(list.size());
     }
 
 }
