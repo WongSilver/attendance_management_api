@@ -87,10 +87,10 @@ public class RoleController {
             if (temp == null || role.getId().equals(temp.getId())) {
                 return ResponseFormat.successful(service.saveOrUpdate(role));
             }
-            return ResponseFormat.fail("用户名已存在");
+            return ResponseFormat.fail("角色名已存在");
         }
         if (mapper.selectCount(new QueryWrapper<Role>().eq("name", role.getName())) > 0) {
-            return ResponseFormat.fail("用户名已存在");
+            return ResponseFormat.fail("角色名已存在");
         }
         return ResponseFormat.successful(service.saveOrUpdate(role));
     }
