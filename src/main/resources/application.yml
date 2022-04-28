@@ -23,7 +23,7 @@ attend:
     expire: 604800    #token有效时长
     header: Authorization
 
-shiro-reids:
+shiro-redis:
   enable: true
   redis-manager:
     host: 127.0.0.1:6379
