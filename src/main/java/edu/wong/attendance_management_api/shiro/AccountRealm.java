@@ -48,12 +48,8 @@ public class AccountRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-//        this.clearCachedAuthenticationInfo(principalCollection);
-//        this.clearCachedAuthorizationInfo(principalCollection);
-//        获取token对应的用户
+        //获取token对应的用户
         User user = (User) principalCollection.getPrimaryPrincipal();
-//        System.out.println("===============" + user.getId());
-
         try {
             UserDTO userInfo = userService.getUserInfo(user.getId());
             info.addRole(userInfo.getRoleName());

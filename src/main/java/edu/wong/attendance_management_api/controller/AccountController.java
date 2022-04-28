@@ -31,7 +31,7 @@ public class AccountController {
 
     @PostMapping("/login")
     public ResponseFormat login(@Validated @RequestBody(required = false) LoginDTO dto, HttpServletResponse response) {
-//        查询数据库是否存在该用户
+        //查询数据库是否存在该用户
         User user = service.getOne(new QueryWrapper<User>().eq("name", dto.getName()));
         if (user == null) {
             return ResponseFormat.fail("用户不存在");
@@ -39,15 +39,12 @@ public class AccountController {
         if (!user.getPassword().equals(dto.getPassword())) {
             return ResponseFormat.fail("密码不正确");
         }
-//       用户名密码正确 token不存在或者失效 生成Token返回给前端
-//        if (jwt == null || jwtUtil.isTokenExpired(jwtUtil.getClaimByToken(jwt).getExpiration())) {
+        //用户名密码正确 token不存在或者失效 生成Token返回给前端
         String jwt = jwtUtil.generateToken(user);
-//        }
         response.setHeader("Authorization", jwt);
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
-//        执行登录
+        //执行登录
         SecurityUtils.getSubject().login(new JwtToken(jwt));
-
         UserDTO userInfo = service.getUserInfo(user.getId());
         return ResponseFormat.successful(userInfo);
     }
