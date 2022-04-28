@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * <p>
@@ -47,12 +47,12 @@ public class Check implements Serializable {
     /**
      * 开始请假时间
      */
-    private LocalDateTime startDate;
+    private ZonedDateTime startDate;
 
     /**
      * 结束请假时间
      */
-    private LocalDateTime endDate;
+    private ZonedDateTime endDate;
     /**
      * 类型
      */

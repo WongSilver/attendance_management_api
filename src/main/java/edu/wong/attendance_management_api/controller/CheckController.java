@@ -1,10 +1,13 @@
 package edu.wong.attendance_management_api.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.entity.Check;
+import edu.wong.attendance_management_api.entity.dto.CheckDTO;
 import edu.wong.attendance_management_api.entity.dto.CheckDateDTO;
 import edu.wong.attendance_management_api.mapper.CheckMapper;
+import edu.wong.attendance_management_api.service.IUserService;
 import edu.wong.attendance_management_api.util.CheckFieldIsNullUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +29,9 @@ import java.util.List;
 public class CheckController {
     @Resource
     CheckMapper checkMapper;
+    @Resource
+    IUserService userService;
+    private CheckDTO checkDTO;
 
     @GetMapping("/homeList")
     public ResponseFormat getCheckList() {
@@ -38,8 +44,6 @@ public class CheckController {
             x.add(checkByDate.getByDate());
             y.add(checkByDate.getCountNum());
         });
-        System.out.println(x);
-        System.out.println(y);
         map.put("x", x);
         map.put("y", y);
 
@@ -49,7 +53,7 @@ public class CheckController {
     // 创建请假单
     @PostMapping("/create")
     public ResponseFormat createCheck(@RequestBody Check check) {
-        System.out.println("------------" + check);
+        //需要校验的属性名
         String[] fieldNames = {"userId", "groupId", "startDate", "endDate", "type"};
         try {
             if (CheckFieldIsNullUtil.isNull(check, fieldNames)) {
@@ -72,7 +76,8 @@ public class CheckController {
         wrapper.eq("yorn", 0);
         wrapper.orderByDesc("id");
         List<Check> checks = checkMapper.selectList(wrapper);
-        return ResponseFormat.successful(checks);
+        List<CheckDTO> dos = getCheckDTOS(checks);
+        return ResponseFormat.successful(dos);
     }
 
     /**
@@ -111,7 +116,20 @@ public class CheckController {
         wrapper.ne("yorn", 0);
         wrapper.orderByDesc("id");
         List<Check> checks = checkMapper.selectList(wrapper);
-        return ResponseFormat.successful(checks);
+
+        List<CheckDTO> dos = getCheckDTOS(checks);
+        return ResponseFormat.successful(dos);
+    }
+
+    private List<CheckDTO> getCheckDTOS(List<Check> checks) {
+        List<CheckDTO> dos = new ArrayList<>();
+        checks.forEach(check -> {
+            checkDTO = new CheckDTO();
+            BeanUtil.copyProperties(check, checkDTO);
+            checkDTO.setUserName(userService.getById(check.getUserId()).getName());
+            dos.add(checkDTO);
+        });
+        return dos;
     }
 
 }
