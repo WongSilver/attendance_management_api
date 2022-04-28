@@ -31,18 +31,19 @@ public class RightController {
     @Resource
     RightMapper mapper;
 
+    //    分页查询
     @GetMapping("/list")
     public ResponseFormat findAll(@RequestParam(defaultValue = "1") Integer currentPage, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String rightName) {
         IPage<Right> page = new Page<>(currentPage, pageSize);
         LambdaQueryWrapper<Right> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 
         lambdaQueryWrapper.like(Strings.isNotEmpty(rightName), Right::getName, rightName);
-
         IPage<Right> pageData = service.page(page, lambdaQueryWrapper);
 
         return ResponseFormat.successful(pageData);
     }
 
+    //    查询所有用户
     @GetMapping("/all")
     public ResponseFormat all() {
         return ResponseFormat.successful(service.list());
@@ -51,21 +52,20 @@ public class RightController {
     /**
      * 逻辑：同用户
      */
-    @PostMapping("/add")
-    public ResponseFormat add(@RequestBody Right right) {
-        if (right.getId() != null) {
-            Right temp = mapper.selectOne(new QueryWrapper<Right>().eq("name", right.getName()));
-            if (temp == null || right.getId().equals(temp.getId())) {
-                return ResponseFormat.successful(service.saveOrUpdate(right));
-            }
-            return ResponseFormat.fail("权限名已存在");
+@PostMapping("/add")
+public ResponseFormat add(@RequestBody Right right) {
+    if (right.getId() != null) {
+        Right temp = mapper.selectOne(new QueryWrapper<Right>().eq("name", right.getName()));
+        if (temp == null || right.getId().equals(temp.getId())) {
+            return ResponseFormat.successful(service.saveOrUpdate(right));
         }
-        if (mapper.selectCount(new QueryWrapper<Right>().eq("name", right.getName())) > 0) {
-            return ResponseFormat.fail("权限名已存在");
-        }
-        return ResponseFormat.successful(service.saveOrUpdate(right));
+        return ResponseFormat.fail("权限名已存在");
     }
-
+    if (mapper.selectCount(new QueryWrapper<Right>().eq("name", right.getName())) > 0) {
+        return ResponseFormat.fail("权限名已存在");
+    }
+    return ResponseFormat.successful(service.saveOrUpdate(right));
+}
 
     @DeleteMapping("/delete/{id}")
     @RequiresRoles("admin")
