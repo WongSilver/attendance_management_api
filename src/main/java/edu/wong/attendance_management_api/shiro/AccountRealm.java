@@ -1,12 +1,8 @@
 package edu.wong.attendance_management_api.shiro;
 
 import edu.wong.attendance_management_api.common.lang.ResponseFormat;
-import edu.wong.attendance_management_api.entity.Right;
 import edu.wong.attendance_management_api.entity.User;
 import edu.wong.attendance_management_api.entity.dto.UserDTO;
-import edu.wong.attendance_management_api.mapper.RightMapper;
-import edu.wong.attendance_management_api.mapper.RoleMapper;
-import edu.wong.attendance_management_api.mapper.UserRoleMapper;
 import edu.wong.attendance_management_api.service.IUserService;
 import edu.wong.attendance_management_api.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +25,6 @@ public class AccountRealm extends AuthorizingRealm {
     private JwtUtil util;
     @Resource
     private IUserService userService;
-    @Resource
-    private UserRoleMapper userRoleMapper;
-    @Resource
-    private RoleMapper roleMapper;
-    @Resource
-    private RightMapper rightMapper;
-    private List<Right> rights;
 
     //    根据token判断此Authenticator是否使用该realm
     @Override
@@ -56,35 +45,6 @@ public class AccountRealm extends AuthorizingRealm {
             List<String> url = new ArrayList<>();
             userInfo.getRights().forEach(right -> url.add(right.getUrl()));
             info.addStringPermissions(url);
-/*
-//            通过 用户ID 查询 角色ID
-            HashMap<String, Object> userMap = new HashMap<>();
-            userMap.put("user_id", user.getId());
-            List<UserRole> userRoles = userRoleMapper.selectByMap(userMap);
-
-//            通过角色ID 查询 角色名
-            HashMap<String, Object> roleMap = new HashMap<>();
-            ArrayList<Integer> rightList = new ArrayList<>();
-            userRoles.forEach(userRole -> {
-//            可能会出现一个用户多个角色，查询的权限名放入info
-//            查询的角色ID放入List给查询权限使用
-                roleMap.put("id", userRole.getRoleId());
-                roleMapper.selectByMap(roleMap).forEach(role -> {
-                    info.addRole(role.getName());
-                    rightList.add(role.getId());
-                });
-            });
-
-//            遍历rightList，把该用户所有的角色ID取出来
-//            通过 角色ID 查询 可操作的Url
-//            添加权限到Shiro
-            rightList.forEach(id -> {
-                rights = rightMapper.selectRightUrlByRoleID(id);
-                rights.forEach(name -> {
-//                    System.out.println(name.getName());
-                    info.addStringPermission(name.getName());
-                });
-            });*/
 
         } catch (Exception e) {
             ResponseFormat.fail("权限查询失败");
