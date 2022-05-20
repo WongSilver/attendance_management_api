@@ -33,6 +33,7 @@ public class CheckController {
     IUserService userService;
     private CheckDTO checkDTO;
 
+    // 请假图表数据
     @GetMapping("/homeList")
     public ResponseFormat getCheckList() {
         HashMap<String, Object> map = new HashMap<>();
