@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableTransactionManagement
-@MapperScan("edu.wong.attendance_management_api.mapper")
 public class MyBatisPlusConfig {
 
     //    MyBatisPlus 分页拦截器
