@@ -55,6 +55,7 @@ public class RoleController {
     }
 
 
+    @RequiresRoles("admin")
     @PostMapping("/edit")
     public ResponseFormat edit(@RequestBody Role role) {
         boolean b;
@@ -79,6 +80,7 @@ public class RoleController {
      *
      * @return ResponseFormat
      */
+    @RequiresRoles("admin")
     @PostMapping("/add")
     public ResponseFormat add(@RequestBody Role role) {
 //        逻辑：同用户
@@ -102,6 +104,7 @@ public class RoleController {
         return ResponseFormat.successful(mapper.deleteById(id));
     }
 
+    @RequiresRoles("admin")
     @PostMapping("/delete/batch/")
     public ResponseFormat deleteBatch(@RequestBody List<Integer> ids) {
         if (ids.size() == 0) {

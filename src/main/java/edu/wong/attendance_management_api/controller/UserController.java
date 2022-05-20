@@ -127,6 +127,8 @@ public class UserController {
      * 1.2.1、一致：当前用户名只有当前用户在使用，可以修改
      * 1.2.2、不一致：其他用户在使用，提示用户名已存在
      */
+
+    @RequiresRoles("admin")
     @PostMapping("/add")
     public ResponseFormat add(@RequestBody User user) {
 
