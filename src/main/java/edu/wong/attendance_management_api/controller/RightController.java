@@ -32,6 +32,7 @@ public class RightController {
     RightMapper mapper;
 
     //    分页查询
+    @RequiresRoles("admin")
     @GetMapping("/list")
     public ResponseFormat findAll(@RequestParam(defaultValue = "1") Integer currentPage, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "") String rightName) {
         IPage<Right> page = new Page<>(currentPage, pageSize);
@@ -52,20 +53,21 @@ public class RightController {
     /**
      * 逻辑：同用户
      */
-@PostMapping("/add")
-public ResponseFormat add(@RequestBody Right right) {
-    if (right.getId() != null) {
-        Right temp = mapper.selectOne(new QueryWrapper<Right>().eq("name", right.getName()));
-        if (temp == null || right.getId().equals(temp.getId())) {
-            return ResponseFormat.successful(service.saveOrUpdate(right));
+    @PostMapping("/add")
+    @RequiresRoles("admin")
+    public ResponseFormat add(@RequestBody Right right) {
+        if (right.getId() != null) {
+            Right temp = mapper.selectOne(new QueryWrapper<Right>().eq("name", right.getName()));
+            if (temp == null || right.getId().equals(temp.getId())) {
+                return ResponseFormat.successful(service.saveOrUpdate(right));
+            }
+            return ResponseFormat.fail("权限名已存在");
         }
-        return ResponseFormat.fail("权限名已存在");
+        if (mapper.selectCount(new QueryWrapper<Right>().eq("name", right.getName())) > 0) {
+            return ResponseFormat.fail("权限名已存在");
+        }
+        return ResponseFormat.successful(service.saveOrUpdate(right));
     }
-    if (mapper.selectCount(new QueryWrapper<Right>().eq("name", right.getName())) > 0) {
-        return ResponseFormat.fail("权限名已存在");
-    }
-    return ResponseFormat.successful(service.saveOrUpdate(right));
-}
 
     @DeleteMapping("/delete/{id}")
     @RequiresRoles("admin")
