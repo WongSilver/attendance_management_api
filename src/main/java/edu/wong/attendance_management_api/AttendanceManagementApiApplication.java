@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @MapperScan("edu.wong.attendance_management_api.mapper")
 public class AttendanceManagementApiApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(AttendanceManagementApiApplication.class, args);
     }
