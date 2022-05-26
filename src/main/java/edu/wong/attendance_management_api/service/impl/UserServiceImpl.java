@@ -3,7 +3,6 @@ package edu.wong.attendance_management_api.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import edu.wong.attendance_management_api.common.lang.ResponseFormat;
 import edu.wong.attendance_management_api.entity.Account;
 import edu.wong.attendance_management_api.entity.Right;
 import edu.wong.attendance_management_api.entity.User;

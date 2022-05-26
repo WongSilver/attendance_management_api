@@ -9,7 +9,7 @@ import java.util.Collections;
 
 /**
  * 代码生成器
- * 参考模板地址：https://baomidou.com/pages/779a6e/
+ * <a href="https://baomidou.com/pages/779a6e/">参考模板地址</a>
  */
 public class CodeGeneratorUtil implements Serializable {
     public static final String url = "jdbc:mysql://localhost:3306/attend_mgt?useUnicode=true&characterEncoding=UTF-8";
