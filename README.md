@@ -9,7 +9,7 @@ Java1.8、MySQL8.0、Redis <br>
 + 这个项目是后端项目，端口号为8088，需要修改自己改。项目所需文件都在下面。<br>
 + 免编译使用方法
   + 下载打包好的项目 [点此下载](https://github.com/WongSilver/attendance_management_api/releases)
-  + 运行命令：`java -jar attendance_management_api-0.0.1-SNAPSHOT.jar` <br>
+  + 运行命令：`java -jar attendance_management_api-0.0.2-SNAPSHOT.jar` <br>
 + SQL文件、论文、用户导入模板： [点此下载](https://github.com/WongSilver/attendance_management_api/tree/master/src/main/resources/document)
 + 前端项目地址 [点此访问](https://github.com/WongSilver/attendance_management_vue)
 
