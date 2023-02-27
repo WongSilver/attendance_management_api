@@ -10,6 +10,7 @@ Java1.8、MySQL8.0、Redis <br>
 + 免编译使用方法
   + 下载打包好的项目 [点此下载](https://github.com/WongSilver/attendance_management_api/releases)
   + 运行命令：`java -jar attendance_management_api-0.0.2-SNAPSHOT.jar` <br>
+  + 测试项目是否运行(可以请求到验证码说明在运行): `http://localhost:8088/captcha`
 + SQL文件、论文、用户导入模板： [点此下载](https://github.com/WongSilver/attendance_management_api/tree/master/src/main/resources/document)
 + 前端项目地址 [点此访问](https://github.com/WongSilver/attendance_management_vue)
 
