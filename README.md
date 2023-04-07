@@ -21,7 +21,11 @@ Java1.8、MySQL8.0、Redis <br>
 <img src="src\main\resources\static\img\home.png">
 
 ## 懒得演示了，自己运行。有问题咨询 QQ:783244553
-## 觉得不错请我喝可乐
-<img src="src\main\resources\static\img\alipay.jpg" width="200px"  alt="支付宝收款码">
-<img src="src\main\resources\static\img\wechatpay.jpg"  width="200px" alt="微信收款码">
+## 觉得不错请我喝可乐 (1分钱不要捐赠辣, 有点侮辱人辣)
+<table>
+    <tr>
+        <td ><center> <img src="src\main\resources\static\img\alipay.jpg" width="200px"  alt="支付宝收款码"></center></td>
+        <td ><center> <img src="src\main\resources\static\img\wechatpay.jpg"  width="200px" alt="微信收款码"></center></td>
+    </tr>
+</table>
 
