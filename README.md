@@ -29,3 +29,10 @@ Java1.8、MySQL8.0、Redis <br>
     </tr>
 </table>
 
+## 不想让我喝可乐, 可以让自己喝可乐
+<table>
+    <tr>
+        <td ><center> <img src="src\main\resources\static\img\alipay-award.jpg" width="200px"  alt="支付宝领红包"></center></td>
+    </tr>
+</table>
+
