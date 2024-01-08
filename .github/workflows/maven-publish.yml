@@ -1,19 +1,17 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 
-name: Maven Package
+name: 考勤api打包 
 
-on:
-  release:
-    types: [created]
+on: 
+  workflow_dispatch: 
 
 jobs:
   develop_build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - name: 拉取最新提交的代码
+      - name: 考勤api打包 
         uses: actions/checkout@v3
-
       - name: 设置jdk
         uses: actions/setup-java@v3
         with:
