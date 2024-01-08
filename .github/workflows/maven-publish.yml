@@ -10,8 +10,6 @@ jobs:
   develop_build:
     runs-on: windows-latest
     steps:
-      - name: 考勤api打包 
-        uses: actions/checkout@v3
       - name: 设置jdk
         uses: actions/setup-java@v3
         with:
