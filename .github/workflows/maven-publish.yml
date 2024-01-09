@@ -10,7 +10,9 @@ jobs:
   develop_build:
     runs-on: windows-latest
     steps:
-      - name: 设置jdk
+      - name: 拉取代码
+        uses: actions/checkout@v3
+      - name: 设置JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
