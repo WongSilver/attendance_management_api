@@ -1,10 +1,9 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 
-name: 考勤api打包 
+name: 项目打包 
 
-on: 
-  workflow_dispatch: 
+on: workflow_dispatch
 
 jobs:
   develop_build:
@@ -17,5 +16,10 @@ jobs:
           java-version: '8'
           cache: 'maven'
 
-      - name: 项目打包
+      - name: 开始打包
         run: mvn -B package
+
+      - name: 上传jar文件
+        uses: actions/upload-artifact@v2
+        with:
+          path: target/*.jar
