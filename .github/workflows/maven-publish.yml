@@ -3,7 +3,8 @@
 
 name: 项目打包 
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
 
 jobs:
   develop_build:
@@ -22,4 +23,5 @@ jobs:
       - name: 上传jar文件
         uses: actions/upload-artifact@v2
         with:
+          name: attendance_management_api
           path: target/*.jar
