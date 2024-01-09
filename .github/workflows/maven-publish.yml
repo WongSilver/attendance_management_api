@@ -23,7 +23,7 @@ jobs:
       - name: 开始打包
         run: mvn clean package -DskipTests
 
-      - name: 上传Jar文件
+      - name: 上传Jar包
         uses: actions/upload-artifact@v4
         with:
           name: attendance_management_api
