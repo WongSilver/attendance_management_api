@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: 拉取代码
         uses: actions/checkout@v3
+        
       - name: 设置JDK
         uses: actions/setup-java@v3
         with:
@@ -20,9 +21,9 @@ jobs:
           cache: 'maven'
 
       - name: 开始打包
-        run: mvn -B package
+        run: mvn clean package -DskipTests
 
-      - name: 上传jar文件
+      - name: 上传Jar文件
         uses: actions/upload-artifact@v2
         with:
           name: attendance_management_api
