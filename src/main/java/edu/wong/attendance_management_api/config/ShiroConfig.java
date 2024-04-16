@@ -5,13 +5,12 @@ import edu.wong.attendance_management_api.shiro.JwtFilter;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.crazycake.shiro.RedisCacheManager;
-import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,7 +28,7 @@ public class ShiroConfig {
     JwtFilter jwtFilter;
 
     @Bean
-    public SessionManager sessionManager(RedisSessionDAO dao) {
+    public SessionManager sessionManager(SessionDAO dao) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(dao);
         return sessionManager;
@@ -37,8 +36,7 @@ public class ShiroConfig {
 
     @Bean
     public SessionsSecurityManager securityManager(AccountRealm accountRealm,
-                                                   SessionManager sessionManager,
-                                                   RedisCacheManager cacheManager) {
+                                                   SessionManager sessionManager) {
 
 //        设置自定义的Realm
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(accountRealm);

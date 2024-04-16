@@ -34,3 +34,4 @@ build/
 ### MAVEN ###
 mvnw
 mvnw.cmd
+/logs/

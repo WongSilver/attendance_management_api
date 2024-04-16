@@ -4,7 +4,7 @@ server:
     context-path: /
 spring:
   mvc:
-    pathmatch:
+    path match:
       matching-strategy: ant_path_matcher #解决引入swagger报错问题
   datasource:
     username: root  #数据库用户名
@@ -22,8 +22,3 @@ attend:
     secret: f4e2e52034348f86b67cde581c0f9eb5    #加密密钥
     expire: 604800    #token有效时长
     header: Authorization
-
-shiro-redis:
-  enable: true
-  redis-manager:
-    host: 127.0.0.1:6379

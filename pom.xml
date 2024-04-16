@@ -49,7 +49,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        mybatisplus-->
+        <!-- mybatisplus-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -66,11 +66,11 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.31</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.crazycake/shiro-redis -->
+        <!-- 添加shiro的支持 -->
         <dependency>
-            <groupId>org.crazycake</groupId>
-            <artifactId>shiro-redis-spring-boot-starter</artifactId>
-            <version>3.3.1</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring-boot-web-starter</artifactId>
+            <version>1.6.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
         <dependency>
@@ -104,7 +104,7 @@
             <version>3.0.0</version>
         </dependency>
 
-        <!--        poi-ooxml-->
+        <!-- poi-ooxml-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
