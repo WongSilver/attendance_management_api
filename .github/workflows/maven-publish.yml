@@ -1,0 +1,30 @@
+# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+
+name: 项目打包 
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  develop_build:
+    runs-on: windows-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v3
+        
+      - name: 设置JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'maven'
+
+      - name: 开始打包
+        run: mvn clean package -DskipTests
+
+      - name: 上传Jar包
+        uses: actions/upload-artifact@v4
+        with:
+          name: attendance_management_api
+          path: target/*.jar
