@@ -1,5 +1,7 @@
 package edu.wong.attendance_management_api.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +14,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @TableName("view_user_info")
 public class Account {
-    private int userId;
+
+    @TableId(type = IdType.AUTO)
+    private Integer userId;
     private String userName;
     private String userTelephone;
     private String userMail;
