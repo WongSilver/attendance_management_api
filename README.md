@@ -20,7 +20,7 @@ Java1.8、MySQL8.0、Redis <br>
 主页：
 <img src="src\main\resources\static\img\home.png">
 
-## 懒得演示了，自己运行。有问题请扫码入群
+## 懒得演示了，自己运行。有问题请扫码入群(Q群号: 952798632)
 <table>
     <tr>
         <td ><center> <img src="src\main\resources\static\img\qq-qrcode.jpg" width="200px"  alt="Q群"></center></td>
